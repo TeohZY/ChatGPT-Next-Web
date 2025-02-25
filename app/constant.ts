@@ -109,8 +109,8 @@ export const UNFINISHED_INPUT = (id: string) => "unfinished-input-" + id;
 
 export const STORAGE_KEY = "chatgpt-next-web";
 
-export const REQUEST_TIMEOUT_MS = 60000;
-export const REQUEST_TIMEOUT_MS_FOR_THINKING = REQUEST_TIMEOUT_MS * 5;
+export const REQUEST_TIMEOUT_MS = 600000;
+export const REQUEST_TIMEOUT_MS_FOR_THINKING = REQUEST_TIMEOUT_MS * 2;
 
 export const EXPORT_MESSAGE_CLASS_NAME = "export-markdown";
 
@@ -496,6 +496,24 @@ const openaiModels = [
   "o3-mini",
 ];
 
+const alibabaModes = [
+  "deepseek-r1",
+  "deepseek-v3",
+  "deepseek-r1-distill-qwen-1.5b",
+  "deepseek-r1-distill-qwen-7b",
+  "deepseek-r1-distill-llama-8b",
+  "deepseek-r1-distill-qwen-14b",
+  "deepseek-r1-distill-qwen-32b",
+  "deepseek-r1-distill-llama-70b",
+  "qwen-turbo",
+  "qwen-plus",
+  "qwen-max",
+  "qwen-max-0428",
+  "qwen-max-0403",
+  "qwen-max-0107",
+  "qwen-max-longcontext",
+];
+
 const googleModels = [
   "gemini-1.0-pro", // Deprecated on 2/15/2025
   "gemini-1.5-pro-latest",
@@ -558,16 +576,6 @@ const bytedanceModels = [
   "Doubao-pro-4k",
   "Doubao-pro-32k",
   "Doubao-pro-128k",
-];
-
-const alibabaModes = [
-  "qwen-turbo",
-  "qwen-plus",
-  "qwen-max",
-  "qwen-max-0428",
-  "qwen-max-0403",
-  "qwen-max-0107",
-  "qwen-max-longcontext",
 ];
 
 const tencentModels = [
@@ -653,14 +661,14 @@ export const DEFAULT_MODELS = [
       sorted: 1, // 这里是固定的，确保顺序与之前内置的版本一致
     },
   })),
-  ...openaiModels.map((name) => ({
+  ...alibabaModes.map((name) => ({
     name,
     available: true,
     sorted: seq++,
     provider: {
-      id: "azure",
-      providerName: "Azure",
-      providerType: "azure",
+      id: "alibaba",
+      providerName: "Alibaba",
+      providerType: "alibaba",
       sorted: 2,
     },
   })),
@@ -708,14 +716,14 @@ export const DEFAULT_MODELS = [
       sorted: 6,
     },
   })),
-  ...alibabaModes.map((name) => ({
+  ...openaiModels.map((name) => ({
     name,
     available: true,
     sorted: seq++,
     provider: {
-      id: "alibaba",
-      providerName: "Alibaba",
-      providerType: "alibaba",
+      id: "azure",
+      providerName: "Azure",
+      providerType: "azure",
       sorted: 7,
     },
   })),
