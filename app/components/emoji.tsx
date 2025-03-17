@@ -3,6 +3,7 @@ import EmojiPicker, {
   EmojiStyle,
   Theme as EmojiTheme,
 } from "emoji-picker-react";
+import Image from "next/image";
 
 import { ModelType } from "../store";
 
@@ -32,16 +33,54 @@ export function getEmojiUrl(unified: string, style: EmojiStyle) {
 export function AvatarPicker(props: {
   onEmojiClick: (emojiId: string) => void;
 }) {
+  let link = "";
+
+  const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    link = e.target.value;
+  };
+
+  const handleComplete = () => {
+    // 点击完成按钮时，通过 onEmojiClick 返回输入框中的链接
+    props.onEmojiClick(link);
+  };
+
   return (
-    <EmojiPicker
-      width={"100%"}
-      lazyLoadEmojis
-      theme={EmojiTheme.AUTO}
-      getEmojiUrl={getEmojiUrl}
-      onEmojiClick={(e) => {
-        props.onEmojiClick(e.unified);
-      }}
-    />
+    <div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {/* 输入框 */}
+        <input
+          type="text"
+          onChange={handleLinkChange}
+          placeholder="输入链接"
+          style={{ flexGrow: 1 }}
+        />
+
+        {/* 完成按钮 */}
+        <button
+          style={{
+            padding: "8px 32px",
+            borderRadius: "8px",
+            backgroundColor: "#0088cc",
+            color: "#fff",
+            marginLeft: "8px",
+            border: "node",
+          }}
+          onClick={handleComplete}
+        >
+          完成
+        </button>
+      </div>
+      {/* Emoji 选择器 */}
+      <EmojiPicker
+        width={"100%"}
+        lazyLoadEmojis
+        theme={EmojiTheme.AUTO}
+        getEmojiUrl={getEmojiUrl}
+        onEmojiClick={(e) => {
+          props.onEmojiClick(e.unified); // 保持原有的表情选择功能
+        }}
+      />
+    </div>
   );
 }
 
@@ -95,6 +134,20 @@ export function Avatar(props: { model?: ModelType; avatar?: string }) {
     return (
       <div className="no-dark">
         <LlmIcon className="user-avatar" width={30} height={30} />
+      </div>
+    );
+  }
+  const avatar = props.avatar as any;
+  if (avatar.startsWith("https://")) {
+    return (
+      <div className="user-avatar">
+        <Image
+          src={avatar}
+          height={30}
+          width={30}
+          style={{ borderRadius: "50%", objectFit: "cover" }}
+          alt="avatar"
+        />
       </div>
     );
   }

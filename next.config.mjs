@@ -33,6 +33,9 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true,
   },
+  images: {
+    domains: ['pic.mstzf.cn'], // Add the external domain here
+  },
 };
 
 const CorsHeaders = [
